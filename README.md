@@ -59,7 +59,9 @@ Instructions on how to use your application.
 
 Visit my sites here!
 https://CFeltes.github.io/Text-Editor-H15
-https://github.com/CFeltes/Text-Editor-H15
+https://github.com/CFeltes/Text-Editor-H15.git
+git@github.com:CFeltes/Text-Editor-H15.git
+
 
 ![See First Page Screenshot](Screenshot-1.jpg)
 ![See Secord Page Screenshot](Screenshot-2.jpg)

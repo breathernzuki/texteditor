@@ -21,7 +21,7 @@ module.exports = () => {
     plugins: [
       // HTML Plugin to inject the bundles into the HTML file
       new HtmlWebpackPlugin({
-        template: './index.html', 
+        template: './src/index.html', 
         title: 'JATE - Text Editor',
       }),
 

@@ -9,7 +9,8 @@ module.exports = () => {
     // Entry points for the main app and install logic
     entry: {
       main: './src/js/index.js',  
-      install: './src/js/install.js' 
+      install: './src/js/install.js',
+      src: './src/js/src.js' // P1918
     },
     // Output directory and filename structure
     output: {

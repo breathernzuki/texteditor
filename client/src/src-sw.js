@@ -63,3 +63,20 @@ registerRoute(
     ],
   })
 );
+
+// Cache static assets using Workbox
+registerRoute(
+  ({ request }) => request.destination === 'document' || request.destination === 'image' || request.destination === 'font',
+  new CacheFirst({
+    cacheName: 'static-assets',
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // Cache for 30 days
+      }),
+    ],
+  })
+);

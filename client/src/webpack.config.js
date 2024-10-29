@@ -1,85 +1,107 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-const path = require('path');
-const { InjectManifest } = require('workbox-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
-module.exports = () => {
-  return {
-    mode: 'development',
-    // Entry points for the main app and install logic
-    entry: {
-      main: './src/js/index.js',  
-      install: './src/js/install.js',
-      src: './src/js/src.js' // P1918
-    },
-    // Output directory and filename structure
-    output: {
-      filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist'),
-    },
-    // Enable source maps for easier debugging
-    devtool: 'source-map',
-    plugins: [
-      // HTML Plugin to inject the bundles into the HTML file
-      new HtmlWebpackPlugin({
-        template: './src/index.html', 
-        title: 'JATE - Text Editor',
-      }),
-
-      // Webpack PWA Manifest to generate manifest.json file for the PWA
-      new WebpackPwaManifest({
-        name: 'JATE Text Editor',
-        short_name: 'JATE',
-        description: 'A Progressive Web App text editor',
-        background_color: '#ffffff',
-        start_url: '/',
-        publicPath: '/',
-        fingerprints: false, // Disabling hashing for filenames
-        inject: true, // Automatically inject the manifest into the HTML
-        icons: [
-          {
-            src: path.resolve('src/images/logo.png'), 
-            sizes: [96, 128, 192, 256, 384, 512], // Icon sizes for different devices
-            destination: path.join('assets', 'icons'),
+module.exports = {
+  mode: 'development', // Use 'production' for final build
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+  },
+  devServer: {
+    static: path.resolve(__dirname, 'dist'),
+    port: 3000,
+    open: true,
+    hot: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
           },
-        ],
-      }),
-
-      // InjectManifest to inject the custom service worker
-      new InjectManifest({
-        swSrc: './src/js/service-worker.js',  // Custom service worker file
-        swDest: 'service-worker.js',   // Destination for the service worker in the output folder
-      }),
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
+  },
+  plugins: [
+    // Cleans the dist folder before each build
+    new CleanWebpackPlugin(),
+    
+    // Generates the main HTML file
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      title: 'Text Editor App',
+    }),
 
-    module: {
-      rules: [
-        // Babel loader to transpile ES6+ code into backwards-compatible JavaScript
+    // Generates the manifest file for PWA
+    new WebpackPwaManifest({
+      filename: 'manifest.json',
+      inject: true,
+      fingerprints: false,
+      name: 'Text Editor App',
+      short_name: 'TextEditor',
+      description: 'A text editor with offline capabilities!',
+      background_color: '#ffffff',
+      theme_color: '#317EFB',
+      start_url: '/',
+      display: 'standalone',
+      icons: [
         {
-          test: /\.m?js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-transform-runtime'],
+          src: path.resolve('src/assets/icon.png'),
+          sizes: [96, 128, 192, 256, 384, 512], // Update with icon sizes needed
+          destination: path.join('icons'),
+        },
+      ],
+    }),
+
+    // Workbox plugin to generate a service worker for caching
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: /\.(?:html|css|js)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'static-resources',
+            expiration: {
+              maxEntries: 30,
+              maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
             },
           },
         },
-        // CSS loader to bundle CSS files into JavaScript 
         {
-          test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
-        },
-        // File loader for handling image files like PNG, SVG, JPG, etc.
-        {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
-          generator: {
-            filename: 'assets/images/[hash][ext][query]', // Path for the bundled images
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'image-cache',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            },
           },
         },
       ],
-    },
-  };
+    }),
+  ],
+  resolve: {
+    extensions: ['.js'],
+  },
 };

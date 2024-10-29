@@ -15,6 +15,7 @@ A text editor that runs in the browser and meets PWA criteria. This application 
     - [Installation Process](#installation-process)
     - [Editor in Use](#editor-in-use)
     - [Build Process](#build-process)
+    - [Build Output](#build-output)
     - [Deployment](#deployment)
   - [Technologies Used](#technologies-used)
   - [License](#license)
@@ -56,6 +57,10 @@ A text editor that runs in the browser and meets PWA criteria. This application 
 ### Build Process
 ![Build Command](./assets/build.png)
 *Running npm run build command*
+
+### Build Output
+![Build Output](./assets/output.png)
+*Results of webpack build process*
 
 ### Deployment
 ![Deployment](./assets/deploy.png)

@@ -1,85 +1,101 @@
-# Text-Editor-H15
-Fifteenth homework assignment
+Text Editor PWA
 
+This project is a Progressive Web Application (PWA) that provides a single-page text editor, capable of running offline and utilizing IndexedDB for data persistence. The application is built using modern web development tools such as Webpack, Babel, and Workbox, making it installable and accessible offline. This project was deployed to Render following the Render Deployment Guide.
+Table of Contents
 
-# Description
-Fifteenth homework assignment - Text Editor
+    User Story
+    Acceptance Criteria
+    Features
+    Installation
+    Usage
+    Technologies Used
+    Deployment
+    Screenshots
+    License
 
+User Story
 
+As a developer, I want to create notes or code snippets with or without an internet connection so that I can reliably retrieve them for later use.
+Acceptance Criteria
 
-## Table of Contents
-- [User-Story] (#User Story)
-- [Acceptance-Criteria] (#Acceptance-Criteria)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+    When the application is opened, it displays a client-server folder structure.
+    Running npm run start from the root directory starts both the backend and frontend.
+    The application is bundled using Webpack, and generates an HTML file, service worker, and manifest.
+    Uses next-gen JavaScript, and the app works without errors in the browser.
+    IndexedDB is created immediately upon opening the app.
+    Content in the editor is saved when clicking outside the DOM window and is retained after reopening.
+    The application can be installed as a PWA with an icon on the desktop.
+    The service worker is registered and precaches static assets.
+    The application is deployed on Render with appropriate build scripts.
 
+Features
 
-## User Story
-AS A developer
-I WANT to create notes or code snippets with or without an internet connection
-SO THAT I can reliably retrieve them for later use
+    Offline Support: Functions offline through service worker caching.
+    Data Persistence: Stores editor content using IndexedDB and automatically saves data when the DOM is unfocused.
+    Webpack Bundling: JavaScript is bundled with Webpack, including Babel for async/await support.
+    Manifest and Service Worker: Uses a manifest for PWA functionality and Workbox for service worker setup.
+    Installable: Can be installed to the user’s desktop or mobile device as a PWA.
 
-## Acceptance-Criteria
-GIVEN a text editor web application
-WHEN I open my application in my editor
-THEN I should see a client server folder structure
-WHEN I run `npm run start` from the root directory
-THEN I find that my application should start up the backend and serve the client
-WHEN I run the text editor application from my terminal
-THEN I find that my JavaScript files have been bundled using webpack
-WHEN I run my webpack plugins
-THEN I find that I have a generated HTML file, service worker, and a manifest file
-WHEN I use next-gen JavaScript in my application
-THEN I find that the text editor still functions in the browser without errors
-WHEN I open the text editor
-THEN I find that IndexedDB has immediately created a database storage
-WHEN I enter content and subsequently click off of the DOM window
-THEN I find that the content in the text editor has been saved with IndexedDB
-WHEN I reopen the text editor after closing it
-THEN I find that the content in the text editor has been retrieved from our IndexedDB
-WHEN I click on the Install button
-THEN I download my web application as an icon on my desktop
-WHEN I load my web application
-THEN I should have a registered service worker using workbox
-WHEN I register a service worker
-THEN I should have my static assets pre cached upon loading along with subsequent pages and static assets
-WHEN I deploy to Render
-THEN I should have proper build scripts for a webpack application
+Installation
 
-## Installation
-Step-by-step instructions on how to install and set up your project.
+To set up the project locally, follow these steps:
 
-****
+    Clone the repository and navigate to the project directory:
 
-## Usage
-Instructions on how to use your application.
+    bash
 
-Visit my sites here!
-https://CFeltes.github.io/Text-Editor-H15
-https://github.com/CFeltes/Text-Editor-H15.git
-git@github.com:CFeltes/Text-Editor-H15.git
+git clone <https://github.com/breathernzuki/texteditor.git>
+cd text-editor-pwa
 
+Install dependencies:
 
-![See First Page Screenshot](Screenshot-1.jpg)
-![See Secord Page Screenshot](Screenshot-2.jpg)
-![See Third Page Screenshot](Screenshot-3.jpg)
+bash
 
+npm install
 
-## Contributing
-Guidelines for contributing to the project.
-Contributors were the author of the source code, AI, help from the program's tutors, and owner of this repository (Cory Feltes) 
+Build the client:
 
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+bash
 
-## Acknowledgments
-Used syllabus/course resources as well as AI resources to check my work.
+npm run build
 
-## Contact Information
-Cory Feltes - cory.feltes@gmail.com
+Start the development server:
 
+bash
 
-//Make sure to keep your README updated as your project evolves!
+    npm run start
+
+Usage
+
+Once the server is running, you can:
+
+    Open the application in the browser, and you’ll find that the IndexedDB database is created immediately.
+    Enter text into the editor, and it will be saved to IndexedDB when you click outside the editor window.
+    Reopen the app to retrieve saved content from IndexedDB.
+    Click on the "Install" button to install the app to your desktop as a PWA.
+
+To view service worker and IndexedDB activity, open DevTools in your browser and go to the Application tab.
+Technologies Used
+
+    Webpack: For bundling JavaScript files and managing plugins.
+    Babel: To enable modern JavaScript features, including async/await.
+    IndexedDB: To store and retrieve data locally, ensuring persistence across sessions.
+    idb: A lightweight wrapper around IndexedDB for simplified data management.
+    Workbox: For generating the service worker and precaching assets.
+    Render: For deploying the application.
+
+Deployment
+
+This application is deployed on Render. You can access the live version here (replace with your Render URL).
+Screenshots
+App Interface
+
+Manifest File
+
+Registered Service Worker
+
+IndexedDB Storage
+
+License
+
+This project is licensed under the MIT License.

@@ -1,0 +1,51 @@
+name: NodeJS with Webpack
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+      # Add fail-fast strategy
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Add caching
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Lint
+      run: npm run lint
+      if: always()
+      
+    - name: Run tests
+      run: npm test
+      if: always()
+      
+    - name: Build
+      run: |
+        npm run build
+        npx webpack --mode production
+        
+    - name: Cache build artifacts
+      uses: actions/cache@v3
+      with:
+        path: |
+          dist
+          .webpack
+        key: ${{ runner.os }}-build-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-build-
